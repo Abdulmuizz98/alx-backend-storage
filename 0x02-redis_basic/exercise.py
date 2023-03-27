@@ -8,14 +8,14 @@ from typing import Union, Callable
 from functools import wraps
 
 
-def count_calls(fn: Callable):
-    @wraps(fn)
+def count_calls(method: Callable) -> Callable:
+    @wraps(method)
     def wrapper(*args, **kwds):
-        name = fn.__qualname__
+        name = method.__qualname__
         rd = args[0]._redis
 
         rd.incr(name)
-        return fn(*args, **kwds)
+        return method(*args, **kwds)
     return wrapper
 
 
