@@ -26,6 +26,9 @@ def replay(fn: Callable) -> None:
 
 
 def call_history(method: Callable) -> Callable:
+    """ Decorator function that stores the history of
+        inputs and outputs for a particular function.
+    """
     @wraps(method)
     def wrapper(*args, **kwds):
         in_key = "{}:inputs".format(method.__qualname__)
@@ -41,6 +44,9 @@ def call_history(method: Callable) -> Callable:
 
 
 def count_calls(method: Callable) -> Callable:
+    """ Decorator function that counts the number of
+        calls of a particular function.
+    """
     @wraps(method)
     def wrapper(*args, **kwds):
         name = method.__qualname__
@@ -70,25 +76,24 @@ class Cache:
         return key
 
     def get_str(self):
-        """
+        """ Helper function to convert Redis bytes to
+            string.
         """
         return bytes.decode
 
     def get_int(self):
-        """
+        """ Helper function to convert Redis bytes to
+            integer.
         """
         return int
 
     def get(self, key: str, fn: Callable[[bytes],
             Union[str, bytes, int, float]] = None):
-        """
+        """ Function that gets a value using a key
+            from the store.
         """
         value = self._redis.get(key)
         if value is not None:
             if fn is not None:
                 return fn(value)
             return value
-
-
-# c = Cache()
-# c.store('boy')
