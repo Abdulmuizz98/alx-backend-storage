@@ -9,6 +9,9 @@ from functools import wraps
 
 
 def replay(fn: Callable) -> None:
+    """ Function to display the history of calls
+        of a particular function.
+    """
     name = fn.__qualname__
     self = fn.__self__
     count = self.get(name, self.get_int())
