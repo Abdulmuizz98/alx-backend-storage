@@ -33,7 +33,7 @@ class Cache:
         """
         return int
 
-    def get(self, key: str, fn: Callable[[bytes], Union[str, bytes, int, float]]):
+    def get(self, key: str, fn: Callable[[bytes], Union[str, bytes, int, float]]=None):
         """
         """
         value = self._redis.get(key)
