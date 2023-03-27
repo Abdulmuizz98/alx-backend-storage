@@ -5,6 +5,18 @@ Main file
 import redis
 from uuid import uuid4
 from typing import Union, Callable
+from functools import wraps
+
+
+def count_calls(fn: Callable):
+    @wraps(fn)
+    def wrapper(*args, **kwds):
+        name = fn.__qualname__
+        rd = args[0]._redis
+
+        rd.incr(name)
+        return fn(*args, **kwds)
+    return wrapper
 
 
 class Cache:
@@ -16,6 +28,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Stores data as a key value pair with uuid
         """
@@ -33,7 +46,8 @@ class Cache:
         """
         return int
 
-    def get(self, key: str, fn: Callable[[bytes], Union[str, bytes, int, float]]=None):
+    def get(self, key: str, fn: Callable[[bytes],
+            Union[str, bytes, int, float]] = None):
         """
         """
         value = self._redis.get(key)
@@ -42,3 +56,6 @@ class Cache:
                 return fn(value)
             return value
 
+
+c = Cache()
+c.store('boy')
