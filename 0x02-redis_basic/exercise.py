@@ -12,9 +12,9 @@ def count_calls(method: Callable) -> Callable:
     @wraps(method)
     def wrapper(*args, **kwds):
         name = method.__qualname__
-        rd = args[0]._redis
+        self = args[0]
 
-        rd.incr(name)
+        self._redis.incr(name)
         return method(*args, **kwds)
     return wrapper
 
@@ -57,5 +57,5 @@ class Cache:
             return value
 
 
-c = Cache()
-c.store('boy')
+# c = Cache()
+# c.store('boy')
