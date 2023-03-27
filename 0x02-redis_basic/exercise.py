@@ -8,6 +8,20 @@ from typing import Union, Callable
 from functools import wraps
 
 
+def replay(fn):
+    name = fn.__qualname__
+    self = fn.__self__
+    count = self.get(name, self.get_int())
+    print("{} was called {} times:".format(name, count))
+    inputs = self._redis.lrange("{}:inputs".format(name), 0, -1)
+    outputs = self._redis.lrange("{}:outputs".format(name), 0, -1)
+
+    result = zip(inputs, outputs)
+    for k, v in result:
+        print('{}(*{}) -> {}'.format(name, self.get_str()(k),
+                                     self.get_str()(v)))
+
+
 def call_history(method: Callable) -> Callable:
     @wraps(method)
     def wrapper(*args, **kwds):
@@ -55,7 +69,7 @@ class Cache:
     def get_str(self):
         """
         """
-        return str
+        return bytes.decode
 
     def get_int(self):
         """
