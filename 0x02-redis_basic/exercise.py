@@ -4,7 +4,7 @@ Main file
 """
 import redis
 from uuid import uuid4
-from typing import Union
+from typing import Union, Callable
 
 
 class Cache:
@@ -22,3 +22,23 @@ class Cache:
         key = str(uuid4())
         self._redis.set(key, data)
         return key
+
+    def get_str(self):
+        """
+        """
+        return str
+
+    def get_int(self):
+        """
+        """
+        return int
+
+    def get(self, key: str, fn: Callable[[bytes], Union[str, bytes, int, float]]):
+        """
+        """
+        value = self._redis.get(key)
+        if value is not None:
+            if fn is not None:
+                return fn(value)
+            return value
+
