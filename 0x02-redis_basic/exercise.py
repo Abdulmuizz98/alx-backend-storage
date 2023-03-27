@@ -8,7 +8,7 @@ from typing import Union, Callable
 from functools import wraps
 
 
-def replay(fn):
+def replay(fn: Callable) -> None:
     name = fn.__qualname__
     self = fn.__self__
     count = self.get(name, self.get_int())
