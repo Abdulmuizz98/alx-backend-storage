@@ -11,8 +11,8 @@ cache = redis.Redis()
 
 
 def count_url_visits(method: Callable):
-    """ Decorator function that keeps count of 
-        the number of times a url is visited and 
+    """ Decorator function that keeps count of
+        the number of times a url is visited and
         caches the result of the visit for 10 seconds.
     """
     @wraps(method)
