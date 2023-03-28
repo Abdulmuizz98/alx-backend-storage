@@ -1,2 +1,2 @@
 // Create and use a db in mongodb
-use db my_db
+use my_db
