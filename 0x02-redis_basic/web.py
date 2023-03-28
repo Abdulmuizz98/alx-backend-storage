@@ -18,12 +18,12 @@ def count_url_visits(method: Callable):
     @wraps(method)
     def wrapper(*args, **kwds):
         url = args[0]
-        key = 'count:{}'.format(url)
+        key = 'count:{{}}'.format(url)
         cache.incr(key)
-        result = method(*args, **kwds)
+        content = method(*args, **kwds)
         cache.set(url, result)
         cache.expire(url, 10)
-        return result
+        return content
     return wrapper
 
 
@@ -32,4 +32,4 @@ def get_page(url: str) -> str:
     """ Requests a url and return result
     """
     r = requests.get(url)
-    return r.text
+    return r.content
