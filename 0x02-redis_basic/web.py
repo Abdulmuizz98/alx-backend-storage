@@ -21,7 +21,7 @@ def count_url_visits(method: Callable):
         key = 'count:{{}}'.format(url)
         cache.incr(key)
         content = method(*args, **kwds)
-        cache.set(url, result)
+        cache.set(url, content)
         cache.expire(url, 10)
         return content
     return wrapper
