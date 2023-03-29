@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Python script that provides some stats about Nginx logs stored in MongoDB:
+""" Python script that provides some stats about Nginx logs stored in MongoDB:
 """
 
 from pymongo import MongoClient
@@ -16,12 +16,11 @@ def count_items(coll, **kwargs):
     return len(list(coll.find(kwargs)))
 
 
-
 if __name__ == "__main__":
     print("{} logs".format(count_items(nginx_coll)))
     print("Methods:")
     for method in methods:
         print("\tmethod {}: {}".format(
               method, count_items(nginx_coll, method=method)))
-        print("{} status check".format(
-              count_items(nginx_coll, method="GET", path="/status")))
+    print("{} status check".format(
+          count_items(nginx_coll, method="GET", path="/status")))
