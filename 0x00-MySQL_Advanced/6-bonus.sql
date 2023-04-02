@@ -1,6 +1,6 @@
 -- Stored procedure AddBonus that adds a new correction for a student.
 DELIMITER //
-CREATE PROCEDURE IF NOT EXISTS AddBonus (IN user_id INT, IN project_name VARCHAR(255), IN score INT)
+CREATE PROCEDURE AddBonus (IN user_id INT, IN project_name VARCHAR(255), IN score INT)
 BEGIN
 DECLARE pid INT DEFAULT 0;
 SELECT id INTO pid FROM projects WHERE projects.name = project_name;
